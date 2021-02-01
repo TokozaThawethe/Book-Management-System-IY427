@@ -278,8 +278,6 @@ int Author_filter() {
         library = fopen(filename, "a+");
         if (library != NULL) {
 
-            fread(book,sizeof(struct Book),count, library);
-
             for (i = 1; i != (count + 1); i++) {
 
                 if (strcmp(book[i].Author, s_author) == 0) {
@@ -321,8 +319,6 @@ int Year_filter() {
     if (save == 'y') {
         library = fopen(filename, "a+");
         if (library != NULL) {
-
-            fread(book,sizeof(struct Book),count, library);
 
             for (i = 1; i != (count + 1); i++) {
 
@@ -366,8 +362,6 @@ int Page_count_filter(){
         library = fopen(filename, "a+");
         if (library != NULL) {
 
-            fread(book,sizeof(struct Book),count, library);
-
             for (i = 1; i != (count + 1); i++) {
 
                 if (book[i].Pagecnt == s_pgcnt) {
@@ -407,8 +401,6 @@ int ISBN_filter() {
     if (save == 'y') {
         library = fopen(filename, "a+");
         if (library != NULL) {
-
-            fread(book,sizeof(struct Book),count, library);
 
             for (i = 1; i != (count + 1); i++) {
 
