@@ -24,6 +24,7 @@ typedef struct Book{
     int Year;
     int Pagecnt;
     int ISBN;
+    struct next = book[count +1];
 
 }Book;
 
@@ -106,11 +107,11 @@ int main() {
         }
 
         if(action != 5) {
-            printf("Enter 'h' to proceed to home page\n Enter 'f' to finish\n\n :");
+            printf("\nEnter 'h' to proceed to home page\n Enter 'f' to finish\n\n :");
             proceed = getch();
         }
 
-    }while((proceed == 'h' || proceed != 'f') && action != 5);
+    }while( proceed != 'f' && action != 5);
 
 
 
@@ -511,6 +512,7 @@ int Delete_book() {
     if(save == 'y') {
 
         library = fopen(filename, "a+");
+        if (library != NULL){
         fread(book, sizeof(struct Book), 1, library);
 
         for (i = 1; i != count; i++) {
@@ -522,7 +524,7 @@ int Delete_book() {
                 free(&book[i].Year);
                 free(&book[i].Pagecnt);
                 free(&book[i].ISBN);
-            }}}
+            }}
 
     book[book_num] = book[book_num+1];
 
@@ -550,11 +552,12 @@ int Delete_book() {
         fprintf(library, "Author : %s\n", book[count].Author);
         fprintf(library, "Year : %d\n", book[count].Year);
         fprintf(library, "Page Count : %d\n", book[count].Pagecnt);
-        fprintf(library, "ISBN : %d\n\n", book[count].ISBN);;
+        fprintf(library, "ISBN : %d\n\n", book[count].ISBN);
     }
+        fclose(library);
+        }else{printf("Error whilst accessing file\n\n")}}
 
-
-    printf("Book Deletion Complete\n\nThere are %d books remaining.",count);
+    printf("Book Deletion Complete\n\nThere are %d books remaining.\n\n",count+1);
 
     return count;
 }
