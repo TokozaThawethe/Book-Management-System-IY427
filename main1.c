@@ -201,8 +201,6 @@ int Word_search(){
         library = fopen(filename, "a+");
         if(library != NULL) {
 
-            fread(book,sizeof(struct Book),count, library);
-
             for (i = 1; i != (count + 1); i++) {
 
                 if (strcmp(book[i].Title, s_title) == 0) {
@@ -228,7 +226,7 @@ int Filter_search(){
     int fchoice;
 
     printf( "\nFilter by :\n\n1.Title \n2.Author \n3.Year of Publication \n4.No. of Pages \n5.ISBN No.\n\n :");
-    scanf("%d", &fchoice);
+    scanf("%d\n\n", &fchoice);
 
     switch(fchoice){
         case 1:
@@ -247,7 +245,7 @@ int Filter_search(){
             ISBN_filter();
             break;
         default:
-            printf("Invalid Entry...");
+            printf("Invalid Entry...\n\n");
             return 0;
     }
 
