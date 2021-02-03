@@ -430,7 +430,7 @@ int Show_books(){
         printf("Author : %s\n", book[i].Author);
         printf("Year : %d\n", book[i].Year);
         printf("Page Count : %d\n", book[i].Pagecnt);
-        printf("ISBN : %d\n", book[i].ISBN);
+        printf("ISBN : %d\n\n", book[i].ISBN);
     }
 
     if(save == 'y') {

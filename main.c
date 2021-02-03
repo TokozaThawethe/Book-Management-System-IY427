@@ -155,10 +155,9 @@ int New_book(){
 
     if(save == 'y') {
 
-        library = fopen(filename,"w+");
-        if(count > 0){
+        if(count > 1){
             library = fopen(filename,"a");
-        }
+        }else { library = fopen(filename,"w");}
 
         if (library != NULL) {
 
