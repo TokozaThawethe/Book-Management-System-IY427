@@ -40,6 +40,8 @@ int size;
 FILE * library;
 char filename[100] = "Book Management System.txt";
 
+//This function is where the user will chose what they would like to do. If they would like to cancel the operation they can also do that.
+
 int main() {
 
     int action;
@@ -121,6 +123,8 @@ int main() {
     return 0;
 }
 
+//This function is used to add new book to the system and to add new book to the file upon request.
+
 int New_book(){
 
     count++;
@@ -176,6 +180,8 @@ int New_book(){
     return count;
 }
 
+//The user can search for a book using a word search where the programme will compare the entered string with the book titles already in the system.
+
 int Word_search(){
 
     char s_title[20];
@@ -222,6 +228,8 @@ int Word_search(){
     return count;
 }
 
+//The user will chose what method of filter they would like to use.
+
 int Filter_search(){
 
     int fchoice;
@@ -254,6 +262,8 @@ int Filter_search(){
 
     return 0;
 }
+
+//The user will enter the name of an author and that string will be compared with the ones in the system.
 
 int Author_filter() {
 
@@ -299,6 +309,8 @@ int Author_filter() {
     return 0;
 }
 
+//The user will enter the year a book was published and that integer will be compared with the ones in the system.
+
 int Year_filter() {
 
     int s_year;
@@ -340,6 +352,8 @@ int Year_filter() {
 
     return count;
 }
+
+//The user will enter the number of pages of a book and that integer will be compared with the ones in the system.
 
 int Page_count_filter(){
 
@@ -385,6 +399,8 @@ int Page_count_filter(){
     return count;
 }
 
+//The user will enter the ISBN number and that integer will be compared with the ones in the system.
+
 int ISBN_filter() {
 
     int s_isbn;
@@ -428,6 +444,8 @@ int ISBN_filter() {
     return count;
 }
 
+//This function displays all the books in the system
+
 int Show_books(){
 
     int i;
@@ -462,11 +480,15 @@ int Show_books(){
             }} else{
             printf("Error accessing file: Library...");
         }
-        printf("\nThere are %d book(s) in total currently in the library\n\n", count);
         puts("Library read successfully\n\n");
     }
+
+    printf("\nThere are %d book(s) in total currently in the library\n\n", count);
+
     return count;
 }
+
+// This function will delete any book the uses chooses to delete.
 
 int Delete_book() {
 
