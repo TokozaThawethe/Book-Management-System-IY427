@@ -48,7 +48,7 @@ int main() {
     int searchchoice;
     char proceed = {'h'};
 
-    printf("\nWelcome to the Legenty Book Management System!!!\n\n ");
+    printf("\nWelcome to the Legenty Book Management System!!!\n\n");
 
     //Create Book Array Dynamic using size input by User
     book = malloc(sizeof(Book) * size);
@@ -108,7 +108,7 @@ int main() {
         }
 
         if(action != 5) {
-            printf("Enter 'h' to proceed to home page\n Enter 'f' to finish\n\n :");
+            printf("Enter 'h' to proceed to home page\nEnter 'f' to finish\n\n :");
             proceed = getch();
         }
 
@@ -159,7 +159,7 @@ int New_book(){
     printf( "Page Count : %d\n", book[count].Pagecnt);
     printf( "ISBN : %d\n\n", book[count].ISBN);
 
-    add_book(&book[count]);
+   // add_book(&book[count]);
 
     if(save == 'y') {
 
@@ -230,11 +230,10 @@ int Word_search(){
             printf("Page count: %d\n", book[i].Pagecnt);
             printf("ISBN: %d\n\n", book[i].ISBN);
         }}
-    if(save == 'y') {
-        library = fopen(filename, "a+");
-        if(library != NULL) {
 
-            fread(book,sizeof(struct Book),count, library);
+    if(save == 'y') {
+        library = fopen(filename, "a");
+        if(library != NULL) {
 
             for (i = 1; i != (count + 1); i++) {
 
@@ -314,10 +313,8 @@ int Author_filter() {
         }}
 
     if (save == 'y') {
-        library = fopen(filename, "a+");
+        library = fopen(filename, "a");
         if (library != NULL) {
-
-            fread(book,sizeof(struct Book),count, library);
 
             for (i = 1; i != (count + 1); i++) {
 
@@ -363,8 +360,6 @@ int Year_filter() {
         library = fopen(filename, "a+");
         if (library != NULL) {
 
-            fread(book,sizeof(struct Book),count, library);
-
             for (i = 1; i != (count + 1); i++) {
 
                 if (book[i].Year == s_year) {
@@ -391,7 +386,7 @@ int Page_count_filter(){
     printf("\n\nEnter a Page count: ");
     scanf("%d", &s_pgcnt);
 
-    for (i = 1; i != (count + 1); i++) {
+    for (i = 1; i != (count +1); i++) {
 
         if (book[i].Pagecnt == s_pgcnt) {
 
@@ -406,10 +401,8 @@ int Page_count_filter(){
     }
 
     if(save == 'y') {
-        library = fopen(filename, "a+");
+        library = fopen(filename, "a");
         if (library != NULL) {
-
-            fread(book,sizeof(struct Book),count, library);
 
             for (i = 1; i != (count + 1); i++) {
 
@@ -453,8 +446,6 @@ int ISBN_filter() {
         library = fopen(filename, "a+");
         if (library != NULL) {
 
-            fread(book,sizeof(struct Book),count, library);
-
             for (i = 1; i != (count + 1); i++) {
 
                 if (book[i].ISBN == s_isbn) {
@@ -478,13 +469,7 @@ int Show_books(){
 
     int i;
 
-    for (struct Book * curr = book ; curr != NULL; curr = curr -> n) {
-        printf("%s\n\n", curr );
-
-    }
-
-
-   /* for(i = 1;i < count+1;i++) {
+    for(i = 1;i < count+1;i++) {
 
         printf("\nBook Number: %d", i);
         printf("\nTitle : %s\n", book[i].Title);
@@ -493,14 +478,12 @@ int Show_books(){
         printf("Page Count : %d\n", book[i].Pagecnt);
         printf("ISBN : %d\n", book[i].ISBN);
     }
-    */
+
 
     if(save == 'y') {
 
-        library = fopen(filename, "a+");
+        library = fopen(filename, "a");
         if(library != NULL) {
-
-            fread(book,sizeof(struct Book),count, library);
 
             for (i = 0; i < 5; i++) {
 
@@ -513,12 +496,12 @@ int Show_books(){
                 fclose(library);
 
             }} else{
-            printf("Error accessing file: Library...");
+            printf("\nError accessing file: Library...");
+            return 0;
         }
-        puts("Library read successfully\n\n");
     }
 
-    printf("\nThere are %d book(s) in total currently in the library\n\n", count);
+    printf("\n\nThere are %d book(s) in total currently in the library\n\n", count);
 
     return count;
 }
@@ -530,7 +513,7 @@ int Delete_book() {
     int book_num = 0;
     int i;
 
-    for(i = 1;i != count+1;i++) {
+    for(i = 1;i != (count+1);i++) {
 
         printf("\nBook Number: %d", i);
         printf("\nTitle : %s\n", book[i].Title);
@@ -547,50 +530,15 @@ int Delete_book() {
         printf("Invalid Book number...\n\n");
         return 0;
     }
-    if(save == 'n'){
+
         for(i = count - 1;i < count + 1; i++){
 
             book[book_num] = book[book_num + 1];
 
         }
-        count-=1;
+        count--;
 
-        for(i = 1;i != count+1;i++) {
-
-            printf("\nBook Number: %d", i);
-            printf("\nTitle : %s\n", book[i].Title);
-            printf("Author : %s\n", book[i].Author);
-            printf("Year : %d\n", book[i].Year);
-            printf("Page Count : %d\n", book[i].Pagecnt);
-            printf("ISBN : %d\n", book[i].ISBN);
-        }}
-
-    if(save == 'y') {
-
-        library = fopen(filename, "a+");
-        fread(book, sizeof(struct Book), 1, library);
-
-        for (i = 1; i != count; i++) {
-
-            if (book[i].Title == book[book_num].Title) {
-
-                free(book[i].Title);
-                free(book[i].Author);
-                free(&book[i].Year);
-                free(&book[i].Pagecnt);
-                free(&book[i].ISBN);
-            }}}
-
-    book[book_num] = book[book_num+1];
-
-    for(i = count - 1;i < count + 1; i++){
-
-        book[book_num] = book[book_num + 1];
-
-    }
-    count--;
-
-    for(i = 1;i != count+1;i++) {
+    for(i = 1;i < count+1;i++) {
 
         printf("\nBook Number: %d", i);
         printf("\nTitle : %s\n", book[i].Title);
@@ -599,6 +547,10 @@ int Delete_book() {
         printf("Page Count : %d\n", book[i].Pagecnt);
         printf("ISBN : %d\n", book[i].ISBN);
     }
+
+    if(save == 'y') {
+
+        library = fopen(filename, "a");
 
     for(i = 1;i != count+1;i++) {
 
@@ -611,7 +563,8 @@ int Delete_book() {
     }
 
 
-    printf("Book Deletion Complete\n\nThere are %d books remaining.",count);
+
+    printf("Book Deletion Complete\n\nThere are %d books remaining.", count);
 
     return count;
 }
