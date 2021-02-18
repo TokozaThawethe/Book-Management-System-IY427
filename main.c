@@ -208,6 +208,21 @@ int add_book(Book * book[count]){
     return count;
 }
 
+void Deallocate(struct Book ** book){
+
+    Book* curr = *book;
+
+    while(curr!= NULL){
+
+        Book * del = curr;
+        curr = curr -> n;
+        free(del);
+
+    }
+
+    *book =NULL;
+}
+
 //The user can search for a book using a word search where the programme will compare the entered string with the book titles already in the system.
 
 int Word_search(){
@@ -506,6 +521,18 @@ int Show_books(){
     return count;
 }
 
+int calculate(Book *book){
+
+    int digit = 0;
+
+    for(Book* curr = book; curr != NULL; curr = curr ->n){
+
+        digit++;
+    }
+
+    return digit;
+}
+
 // This function will delete any book the uses chooses to delete.
 
 int Delete_book() {
@@ -566,3 +593,6 @@ int Delete_book() {
 
     return count;
 }
+
+
+
