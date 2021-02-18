@@ -8,6 +8,7 @@
 #include <conio.h>
 
 int New_book();
+int add_book();
 int Word_search();
 int Filter_search();
 int Author_filter();
@@ -24,15 +25,14 @@ typedef struct Book{
     int Year;
     int Pagecnt;
     int ISBN;
+    struct Book * n;
+    struct Book * p;
 
 }Book;
 
-typedef struct Node{
-    Book date ;
-    struct Node*next;
-}Node;
+struct Book * book = NULL;
+Book bk;
 
-struct Book * book;
 int count ;
 char save = 'n';
 int size;
@@ -127,6 +127,8 @@ int main() {
 
 int New_book(){
 
+    //struct Book * book = NULL;
+
     count++;
     library = malloc(sizeof(FILE) * size);
 
@@ -157,6 +159,8 @@ int New_book(){
     printf( "Page Count : %d\n", book[count].Pagecnt);
     printf( "ISBN : %d\n\n", book[count].ISBN);
 
+    add_book(&book[count]);
+
     if(save == 'y') {
 
         if(count > 1){
@@ -176,6 +180,30 @@ int New_book(){
         }else{
             printf("\nError while accessing File: Library\n\n");
         }}
+
+    return count;
+}
+
+int add_book(Book * book[count]){
+
+    Book * newbook = malloc(sizeof(Book));
+
+    if(newbook == NULL){
+        exit(1);
+    }
+    newbook -> n = NULL;
+    newbook = book[count];
+
+    if(*book == NULL){
+        *book = newbook;
+    }
+
+    Book * curr = *book;
+
+    while(curr -> n != NULL){
+        curr = curr -> n;
+    }
+    curr -> n = newbook;
 
     return count;
 }
@@ -450,7 +478,13 @@ int Show_books(){
 
     int i;
 
-    for(i = 1;i < count+1;i++) {
+    for (struct Book * curr = book ; curr != NULL; curr = curr -> n) {
+        printf("%s\n\n", curr );
+
+    }
+
+
+   /* for(i = 1;i < count+1;i++) {
 
         printf("\nBook Number: %d", i);
         printf("\nTitle : %s\n", book[i].Title);
@@ -459,6 +493,7 @@ int Show_books(){
         printf("Page Count : %d\n", book[i].Pagecnt);
         printf("ISBN : %d\n", book[i].ISBN);
     }
+    */
 
     if(save == 'y') {
 

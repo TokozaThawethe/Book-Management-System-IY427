@@ -8,6 +8,7 @@
 #include <conio.h>
 
 int New_book();
+int add_book();
 int Word_search();
 int Filter_search();
 int Author_filter();
@@ -24,22 +25,22 @@ typedef struct Book{
     int Year;
     int Pagecnt;
     int ISBN;
-    struct next = book[count +1];
+    struct Book * n;
+    struct Book * p;
 
 }Book;
 
-typedef struct Node{
-    Book date ;
-    struct Node*next;
-}Node;
+struct Book * book = NULL;
+Book bk;
 
-struct Book * book;
 int count ;
 char save = 'n';
 int size;
 
 FILE * library;
 char filename[100] = "Book Management System.txt";
+
+//This function is where the user will chose what they would like to do. If they would like to cancel the operation they can also do that.
 
 int main() {
 
@@ -107,11 +108,11 @@ int main() {
         }
 
         if(action != 5) {
-            printf("\nEnter 'h' to proceed to home page\n Enter 'f' to finish\n\n :");
+            printf("Enter 'h' to proceed to home page\n Enter 'f' to finish\n\n :");
             proceed = getch();
         }
 
-    }while( proceed != 'f' && action != 5);
+    }while((proceed == 'h' || proceed != 'f') && action != 5);
 
 
 
@@ -122,9 +123,14 @@ int main() {
     return 0;
 }
 
+//This function is used to add new book to the system and to add new book to the file upon request.
+
 int New_book(){
 
+    //struct Book * book = NULL;
+
     count++;
+    library = malloc(sizeof(FILE) * size);
 
     printf("Add book to Library:\n\n");
     printf("Please enter the following info:\n");
@@ -153,12 +159,13 @@ int New_book(){
     printf( "Page Count : %d\n", book[count].Pagecnt);
     printf( "ISBN : %d\n\n", book[count].ISBN);
 
+    //add_book(&book, book);
+
     if(save == 'y') {
 
-        library = fopen(filename,"w+");
-        if(count > 1){
+        if(count > 0){
             library = fopen(filename,"a");
-        }
+        }else { library = fopen(filename,"w");}
 
         if (library != NULL) {
 
@@ -171,11 +178,37 @@ int New_book(){
             fclose(library);
 
         }else{
-            printf("\nError while accessing File: Library");
+            printf("\nError while accessing File: Library\n\n");
         }}
 
     return count;
 }
+
+int add_book(struct Book ** book){
+
+    Book * newbook = malloc(sizeof(Book));
+
+    if(newbook == NULL){
+        exit(1);
+    }
+    newbook -> n = NULL;
+    newbook = book;
+
+    if(*book == NULL){
+        *book = newbook;
+    }
+
+    Book * curr = *book;
+
+    while(curr -> n != NULL){
+        curr = curr -> n;
+    }
+    curr -> n = newbook;
+
+    return count;
+}
+
+//The user can search for a book using a word search where the programme will compare the entered string with the book titles already in the system.
 
 int Word_search(){
 
@@ -201,6 +234,8 @@ int Word_search(){
         library = fopen(filename, "a+");
         if(library != NULL) {
 
+            fread(book,sizeof(struct Book),count, library);
+
             for (i = 1; i != (count + 1); i++) {
 
                 if (strcmp(book[i].Title, s_title) == 0) {
@@ -221,12 +256,14 @@ int Word_search(){
     return count;
 }
 
+//The user will chose what method of filter they would like to use.
+
 int Filter_search(){
 
     int fchoice;
 
     printf( "\nFilter by :\n\n1.Title \n2.Author \n3.Year of Publication \n4.No. of Pages \n5.ISBN No.\n\n :");
-    scanf("%d\n\n", &fchoice);
+    scanf("%d", &fchoice);
 
     switch(fchoice){
         case 1:
@@ -245,7 +282,7 @@ int Filter_search(){
             ISBN_filter();
             break;
         default:
-            printf("Invalid Entry...\n\n");
+            printf("Invalid Entry...");
             return 0;
     }
 
@@ -253,6 +290,8 @@ int Filter_search(){
 
     return 0;
 }
+
+//The user will enter the name of an author and that string will be compared with the ones in the system.
 
 int Author_filter() {
 
@@ -278,6 +317,8 @@ int Author_filter() {
         library = fopen(filename, "a+");
         if (library != NULL) {
 
+            fread(book,sizeof(struct Book),count, library);
+
             for (i = 1; i != (count + 1); i++) {
 
                 if (strcmp(book[i].Author, s_author) == 0) {
@@ -295,6 +336,8 @@ int Author_filter() {
     }
     return 0;
 }
+
+//The user will enter the year a book was published and that integer will be compared with the ones in the system.
 
 int Year_filter() {
 
@@ -320,6 +363,8 @@ int Year_filter() {
         library = fopen(filename, "a+");
         if (library != NULL) {
 
+            fread(book,sizeof(struct Book),count, library);
+
             for (i = 1; i != (count + 1); i++) {
 
                 if (book[i].Year == s_year) {
@@ -335,6 +380,8 @@ int Year_filter() {
 
     return count;
 }
+
+//The user will enter the number of pages of a book and that integer will be compared with the ones in the system.
 
 int Page_count_filter(){
 
@@ -362,6 +409,8 @@ int Page_count_filter(){
         library = fopen(filename, "a+");
         if (library != NULL) {
 
+            fread(book,sizeof(struct Book),count, library);
+
             for (i = 1; i != (count + 1); i++) {
 
                 if (book[i].Pagecnt == s_pgcnt) {
@@ -377,6 +426,8 @@ int Page_count_filter(){
 
     return count;
 }
+
+//The user will enter the ISBN number and that integer will be compared with the ones in the system.
 
 int ISBN_filter() {
 
@@ -402,6 +453,8 @@ int ISBN_filter() {
         library = fopen(filename, "a+");
         if (library != NULL) {
 
+            fread(book,sizeof(struct Book),count, library);
+
             for (i = 1; i != (count + 1); i++) {
 
                 if (book[i].ISBN == s_isbn) {
@@ -419,19 +472,28 @@ int ISBN_filter() {
     return count;
 }
 
+//This function displays all the books in the system
+
 int Show_books(){
 
     int i;
 
-    for(i = 1;i < count+1;i++) {
+    for (struct Book * curr = book ; curr != NULL; curr = curr -> n) {
+        printf("%s\n\n", curr );
 
-        printf("\nBook Number: %d", i);
-        printf("\nTitle : %s\n", book[i].Title);
-        printf("Author : %s\n", book[i].Author);
-        printf("Year : %d\n", book[i].Year);
-        printf("Page Count : %d\n", book[i].Pagecnt);
-        printf("ISBN : %d\n\n", book[i].ISBN);
     }
+
+
+    /* for(i = 1;i < count+1;i++) {
+
+         printf("\nBook Number: %d", i);
+         printf("\nTitle : %s\n", book[i].Title);
+         printf("Author : %s\n", book[i].Author);
+         printf("Year : %d\n", book[i].Year);
+         printf("Page Count : %d\n", book[i].Pagecnt);
+         printf("ISBN : %d\n", book[i].ISBN);
+     }
+     */
 
     if(save == 'y') {
 
@@ -453,11 +515,15 @@ int Show_books(){
             }} else{
             printf("Error accessing file: Library...");
         }
-        printf("\nThere are %d book(s) in total currently in the library\n\n", count);
         puts("Library read successfully\n\n");
     }
+
+    printf("\nThere are %d book(s) in total currently in the library\n\n", count);
+
     return count;
 }
+
+// This function will delete any book the uses chooses to delete.
 
 int Delete_book() {
 
@@ -502,7 +568,6 @@ int Delete_book() {
     if(save == 'y') {
 
         library = fopen(filename, "a+");
-        if (library != NULL){
         fread(book, sizeof(struct Book), 1, library);
 
         for (i = 1; i != count; i++) {
@@ -514,7 +579,7 @@ int Delete_book() {
                 free(&book[i].Year);
                 free(&book[i].Pagecnt);
                 free(&book[i].ISBN);
-            }}
+            }}}
 
     book[book_num] = book[book_num+1];
 
@@ -542,15 +607,13 @@ int Delete_book() {
         fprintf(library, "Author : %s\n", book[count].Author);
         fprintf(library, "Year : %d\n", book[count].Year);
         fprintf(library, "Page Count : %d\n", book[count].Pagecnt);
-        fprintf(library, "ISBN : %d\n\n", book[count].ISBN);
+        fprintf(library, "ISBN : %d\n\n", book[count].ISBN);;
     }
-        fclose(library);
-        }else{printf("Error whilst accessing file\n\n")}}
 
-    printf("Book Deletion Complete\n\nThere are %d books remaining.\n\n",count+1);
+
+    printf("Book Deletion Complete\n\nThere are %d books remaining.",count);
 
     return count;
 }
-
 
 
