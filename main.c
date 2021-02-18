@@ -560,9 +560,7 @@ int Delete_book() {
         fprintf(library, "Year : %d\n", book[count].Year);
         fprintf(library, "Page Count : %d\n", book[count].Pagecnt);
         fprintf(library, "ISBN : %d\n\n", book[count].ISBN);;
-    }
-
-
+    }}
 
     printf("Book Deletion Complete\n\nThere are %d books remaining.", count);
 
